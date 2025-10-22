@@ -412,23 +412,22 @@ jobs:
           $startupFolder = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
           
           # Script batch qui attend que le systÃ¨me soit prÃªt
-          $autoRegisterRDP = @"
-@echo off
-REM Auto-register RDP on dashboard at startup
-timeout /t 10 /nobreak >nul
-cd /d D:\Script\RDP-Scripts
-start "RDP Registration" /min cmd /c "python rdp_register.py"
-exit
-"@
+          $line1 = "@echo off"
+          $line2 = "REM Auto-register RDP on dashboard at startup"
+          $line3 = "timeout /t 10 /nobreak >nul"
+          $line4 = "cd /d D:\Script\RDP-Scripts"
+          $line5 = "start `"RDP Registration`" /min cmd /c `"python rdp_register.py`""
+          $line6 = "exit"
           
+          $autoRegisterRDP = "$line1`n$line2`n$line3`n$line4`n$line5`n$line6"
           $autoRegisterRDP | Out-File -FilePath "$startupFolder\Auto-Register-RDP.bat" -Encoding ASCII -Force
           Write-Host "RDP auto-registration configured in startup folder"
           
           # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
           if (Test-Path "$startupFolder\Auto-Register-RDP.bat") {
-              Write-Host "âœ… Auto-start script created successfully"
+              Write-Host "Auto-start script created successfully"
           } else {
-              Write-Host "âš ï¸ Warning: Auto-start script creation failed"
+              Write-Host "Warning: Auto-start script creation failed"
           }
 
       - name: Install Tailscale
